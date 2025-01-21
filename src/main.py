@@ -51,10 +51,20 @@ def main():
     ip_data = [{"IP Address": ip, "Failed Attempts": count} for ip, count in ip_counts.items()]
     save_to_csv(ip_data, OUTPUT_IP_REPORT)
 
-    # Print IP counts in the terminal
-    print("\nFailed login attempts by IP:")
-    for ip, count in ip_counts.items():
-        print(f"{ip}: {count} attempts")
+    # Identify suspicious IPs (threshold: 2 attempts)
+    print("\nIdentifying suspicious IPs...")
+    threshold = 2
+    suspicious_ips = {ip: count for ip, count in ip_counts.items() if count >= threshold}
+
+    # Display suspicious IPs
+    if suspicious_ips:
+        print("\nSuspicious IPs with high activity:")
+        for ip, count in suspicious_ips.items():
+            print(f"{ip}: {count} attempts")
+    else:
+        print("No suspicious IPs detected.")
+
+    print("\nAnalysis complete.")
 
 if __name__ == "__main__":
     main()
